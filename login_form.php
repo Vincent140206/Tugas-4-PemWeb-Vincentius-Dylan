@@ -3,7 +3,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['username'];
     $password = $_POST['password'];
 
-    $domain = substr(strrchr($email, "@"), 1); 
+    $domain = substr(strrchr($email, "@"), 1);
 
     if ($password === $domain) {
         echo '<!DOCTYPE html>
@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <body>
             <div class="login-container">
                 <h2>Form Informasi Tambahan</h2>
-                <form action="submit_info.php" method="POST">
+                <form action="submit_info.php" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="name">Nama:</label>
                         <input type="text" id="name" name="name" required>
@@ -48,6 +48,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <label for="additional_info">Additional Information:</label>
                         <textarea id="additional_info" name="additional_info"></textarea>
                     </div>
+                    <div class="form-group">
+                        <label for="photo">Upload Photo:</label>
+                            <input type="file" id="photo" name="photo" accept="image/*" required>
+                    </div>
                     <button type="submit">Submit</button>
                 </form>
             </div>
@@ -60,4 +64,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 } else {
     echo "Invalid request.";
 }
-?>

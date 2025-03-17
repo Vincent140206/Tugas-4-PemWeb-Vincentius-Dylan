@@ -62,7 +62,6 @@
         <h1>Curriculum Vitae</h1>
         <?php
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            
             $name = htmlspecialchars($_POST['name']);
             $summary = nl2br(htmlspecialchars($_POST['summary']));
             $experience = nl2br(htmlspecialchars($_POST['experience']));
@@ -71,25 +70,39 @@
             $capability = nl2br(htmlspecialchars($_POST['capability']));
             $additional_info = nl2br(htmlspecialchars($_POST['additional_info']));
 
-            
-            echo "<h2>Personal Information</h2>";
-            echo "<p><strong>Nama:</strong> $name</p>";
-            echo "<p><strong>Summary:</strong> $summary</p>";
+            if (isset($_FILES['photo']) && $_FILES['photo']['error'] == 0) {
+                $upload_dir = 'uploads/'; 
+                $photo_name = basename($_FILES['photo']['name']);
+                $target_file = $upload_dir . $photo_name;
 
-            echo "<h2>Work Experience</h2>";
-            echo "<div class='sub'>$experience</div>";
+                if (move_uploaded_file($_FILES['photo']['tmp_name'], $target_file)) {
+                    echo "<h2>Photo:</h2>";
+                    echo "<img src='$target_file' alt='Uploaded Photo' style='max-width: 200px; max-height: 200px;'>";
 
-            echo "<h2>Education</h2>";
-            echo "<div class='sub'>$education</div>";
+                    echo "<h2>Personal Information</h2>";
+                    echo "<p><strong>Nama:</strong> $name</p>";
+                    echo "<p><strong>Summary:</strong> $summary</p>";
 
-            echo "<h2>Awards</h2>";
-            echo "<div class='sub'>$award</div>";
+                    echo "<h2>Work Experience</h2>";
+                    echo "<div class='sub'>$experience</div>";
 
-            echo "<h2>Capabilities</h2>";
-            echo "<div class='sub'>$capability</div>";
+                    echo "<h2>Education</h2>";
+                    echo "<div class='sub'>$education</div>";
 
-            echo "<h2>Additional Information</h2>";
-            echo "<div class='sub'>$additional_info</div>";
+                    echo "<h2>Awards</h2>";
+                    echo "<div class='sub'>$award</div>";
+
+                    echo "<h2>Capabilities</h2>";
+                    echo "<div class='sub'>$capability</div>";
+
+                    echo "<h2>Additional Information</h2>";
+                    echo "<div class='sub'>$additional_info</div>";
+                } else {
+                    echo "Sorry, there was an error uploading your file.";
+                }
+            } else {
+                echo "No file uploaded or there was an upload error.";
+            }
         } else {
             echo "<p>Invalid request.</p>";
         }
